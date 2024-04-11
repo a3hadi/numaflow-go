@@ -10,7 +10,7 @@ Ensure that this change is merged and included in the release.
 
 ### How to Release
 
-This can be done via the Github UI. In the `Releases` section of the Go SDK repo, click `Draft a new release`. Create an appropriate tag for the version number, using the [semantic versioning](https://semver.org/) specification, and select it. Make 
+This can be done via the Github UI. In the `Releases` section of the Go SDK repo, click `Draft a new release`. Create an appropriate tag for the version number, using the [semantic versioning specification](https://semver.org/), and select it. Make 
 the title the same as the tag. Click `Generate release notes` so that all the changes made since the last release are documented. If there are any major features or breaking
 changes that you would like to highlight as part of the release, add those to the description as well. Then set the release as either pre-release or latest, depending
 on your situation. Finally, click `Publish release`, and your version tag will be the newest release on the repository.
