@@ -31,17 +31,22 @@ Note: before running the script, ensure that through the CLI, you are logged int
 
 After confirming that your changes pass local testing:
 1. Clean up testing artifacts
-2. Create a PR. Once your PR has been merged, a Github Actions workflow (Docker Publish) will be triggered, to build, tag (with `stable`), and push
-   all example images. This ensures that all example images are using the most up-to-date version of the SDK, i.e. the one including your
-   changes.
+2. Create a PR. Once your PR has been merged, a Github Actions workflow (`Docker Publish`) will be triggered, to build, tag (with `stable`), and push
+all example images. This ensures that all example images are using the most up-to-date version of the SDK, i.e. the one including your changes
+3. If your SDK changes included modifications to any files in `pkg/info` or `pkg/apis/proto`, it is necessary 
+to update the `go.mod` [file](https://github.com/numaproj/numaflow/blob/main/go.mod) in the Numaflow repo. This is because `numaflow-go` is a dependency of the Numaflow platform, and the files
+in these directories are imported and used by Numaflow. Thus, get the commit SHA
+of the merged PR from the previous step, and in the Numaflow repo run:
+    ```shell
+    go get github.com/numaproj/numaflow-go@<commit-sha>
+   ```
+   Followed by:
+   ```shell
+   go mod tidy
+   ```
+   Create a PR for these changes
 
-### After release
+### Adding a New Example
 
-Once a new version has been released, and its corresponding version tag exists on the remote repo, you want to update the `go.mod` 
-files to reflect this new version:
-```shell
-./hack/update_examples.sh -u <version>
-  ```
-After running the above, create a PR for the changes that the script made. Once merged, it will trigger the Docker Publish workflow.
-As a result, the correct SDK version will always be printed in the server information logs, 
-and the example images will always be using the latest changes (due to the local references).
+If you add a new example, in order for it to be used by the `Docker Publish` workflow, add its path
+to the `dockerfile_paths` matrix in `.github/workflows/build-push.yaml`.
